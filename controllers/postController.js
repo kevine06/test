@@ -90,16 +90,13 @@ module.exports.likePost = async (req, res) => {
                 { new: true }
             );
             
-    // Vérifier si les deux opérations se sont déroulées avec succès
     if (userLikePost && AddLikeUser) {
-        // Si oui, envoyer une réponse avec les données mises à jour
         res.status(201).json({ post: userLikePost, user: AddLikeUser });
     } else {
-        // Si l'une des opérations a échoué, envoyer une réponse avec une erreur
         res.status(400).send('Error to Add');
     }
 } catch (err) {
-    // Attraper toute erreur survenue pendant l'exécution des opérations
+
     res.status(500).send(err);
 }
 };
@@ -130,14 +127,11 @@ module.exports.unlikePost = async (req, res) => {
         
 // Vérifier si les deux opérations se sont déroulées avec succès
 if (userLikePost && AddLikeUser) {
-    // Si oui, envoyer une réponse avec les données mises à jour
     res.status(201).json({ post: userLikePost, user: AddLikeUser });
 } else {
-    // Si l'une des opérations a échoué, envoyer une réponse avec une erreur
     res.status(400).send('Error to Add');
 }
 } catch (err) {
-// Attraper toute erreur survenue pendant l'exécution des opérations
 res.status(500).send(err);
 }
 }

@@ -3,7 +3,6 @@ const authController = require('../controllers/authControllers');
 const userController = require('../controllers/userController')
 const uploadController = require('../controllers/uploadController')
 
-
 // auth
 router.post("/register", authController.signUp);
 router.post("/login", authController.signIn)
@@ -18,7 +17,6 @@ router.patch('/follow/:id', userController.follow)
 router.patch('/unfollow/:id', userController.unFollow)
 
 // upload
-
 router.post('/upload', uploadController.uploadProfil)
 
 
