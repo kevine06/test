@@ -1,6 +1,8 @@
 const PostModel = require('../models/post.model')
 const UserModel = require('../models/user.model')
 const ObjectID = require('mongoose').Types.ObjectId;
+const multer = require('multer');
+
 
 
 module.exports.readPost = (req, res) => {
@@ -9,22 +11,71 @@ module.exports.readPost = (req, res) => {
     .catch(err => console.log('Error to get data :', err)).sort({ createdAt: -1 });
 };
 
-module.exports.createPost = async (req, res) =>  {
-    const newPost = new PostModel({
-        posterId: req.body.posterId,
-        message: req.body.message,
-        video: req.body.video,
-        likers: [],
-        comments: [],
-    });
+// create post 
 
-    try {
-        const post = await newPost.save();
-        return res.status(201).json(post)
-    } catch (err) {
-        return res.status(400).send(err);
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, `${__dirname}/../client/public/upload/posts/`);
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + "-" + file.originalname);
     }
-}
+});
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 150000 // Limite de taille en octets (150 Ko)
+    },
+    fileFilter: function (req, file, cb) {
+        if (
+            file.mimetype === "image/jpeg" ||
+            file.mimetype === "image/png" ||
+            file.mimetype === "image/jpg"
+        ) {
+            cb(null, true);
+        } else {
+            cb(new Error('Invalid file type'));
+        }
+    }
+}).single('file'); // 'file' est le nom du champ de fichier dans le formulaire HTML
+
+module.exports.createPost = async (req, res) => {
+    upload(req, res, async function (err) {
+        if (err instanceof multer.MulterError) {
+            // Si l'erreur est liée à la taille du fichier
+            if (err.code === 'LIMIT_FILE_SIZE') {
+                return res.status(400).json({ error: 'File size exceeds the limit' });
+            }
+            // Autres erreurs Multer
+            return res.status(400).json({ error: err.message });
+        } else if (err) {
+            // Autres erreurs
+            return res.status(500).json({ error: err.message });
+        }
+
+        let imagePath = null;
+        if (req.file) {
+            imagePath = "./upload/posts/" + req.file.filename;
+        }
+
+        const newPost = new PostModel({
+            posterId: req.body.posterId,
+            message: req.body.message,
+            picture: imagePath,
+            likers: [],
+            comments: [],
+        });
+
+        try {
+            const post = await newPost.save();
+            return res.status(201).json(post);
+        } catch (err) {
+            return res.status(400).json({ error: err.message });
+        }
+    });
+};
+
 
 module.exports.updatePost = async (req, res) => {
     if(!ObjectID.isValid(req.params.id))
