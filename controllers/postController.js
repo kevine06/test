@@ -7,9 +7,11 @@ const multer = require('multer');
 
 module.exports.readPost = (req, res) => {
     PostModel.find()
+    .sort({ createdAt: -1 })
     .then(docs => res.send(docs))
-    .catch(err => console.log('Error to get data :', err)).sort({ createdAt: -1 });
+    .catch(err => console.log('Error to get data :', err));
 };
+
 
 // create post 
 
@@ -222,7 +224,7 @@ module.exports.editCommentPost = async (req, res) => {
         if (!post) return res.status(404).send('Post not found');
 
         const theComment = post.Comments.find((comment) => 
-            comment._id.equals(req.body.commentId)
+            comment._id.equals(req.body.commenterId)
         );
 
         if (!theComment) return res.status(404).send('Comment not found');
