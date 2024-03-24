@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Profil from '../../pages/Profil';
-import Trending from '../../pages/Trending';
-import Home from '../../pages/Home';
+import Profil from '../pages/Profil';
+import Trending from '../pages/Trending';
+import Home from '../pages/Home';
+import React from 'react';
 
 export default function Index() {
     return (

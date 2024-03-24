@@ -1,10 +1,11 @@
-import Routes from './components/Routes/index'
-function App() {
+import React from 'react';
+import Routes from './components/Routes'
+
+
+export default function App() {
   return (
     <div>
       <Routes />
     </div>
   );
 }
-
-export default App;
