@@ -17,7 +17,7 @@ export default function SignInFrom() {
         axios({
             method : 'post',
             url: `${REACT_APP_API_URL}/api/user/login`,
-            //  withCredentials: true,
+            withCredentials: true,
             data: {
                 email,
                 password

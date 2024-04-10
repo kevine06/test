@@ -10,25 +10,19 @@ export default function App() {
 
   useEffect(() => {
     const fetchToken = async () => {
-      try {
-        const response = await axios.get(`${REACT_APP_API_URL}jwtid`, {
-          withCredentials: true
-        });
-
-        // // Stockez le cookie dans js-cookie
-        // const jwtCookie = response.headers['set-cookie'];
-        // if (jwtCookie) {
-        //   const jwtToken = jwtCookie.split(';')[0].split('=')[1];
-        //   Cookies.set('jwt', jwtToken); // Stockez le cookie JWT côté client
-        // }
-
-        setUid(response.data);
-      } catch (error) {
-        console.error("voici:", error);
-      }
+      await axios({
+        method: "get",
+        url: `${REACT_APP_API_URL}/jwtid`,
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
+        setUid(res.data)
+      })
+      .catch((err) => { console.log('No Token', err)})
     };
     fetchToken();
-  }, []);
+  }, [uid]);
 
   return (
     <UidContext.Provider value={uid}>
