@@ -31,7 +31,7 @@ module.exports.requireAuth = (req, res, next) => {
         jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
             if (err) {
                 console.error(err); // Affiche l'erreur dans la console
-                res.status(401).json({ message: 'Unauthorized' }); // Envoie une réponse 401 Unauthorized
+                res.status(401).json({ message: 'Unauthori' }); // Envoie une réponse 401 Unauthorized
             } else {
                 console.log(decodedToken.id);
                 req.user = decodedToken; // Ajoute l'objet decodedToken à la requête pour qu'il soit disponible dans les middlewares suivants
@@ -39,7 +39,7 @@ module.exports.requireAuth = (req, res, next) => {
             }
         });
     } else {
-        console.log('No token');
+        console.log('No token bro');
         res.status(401).json({ message: 'Unauthorized' }); // Envoie une réponse 401 Unauthorized
     }
 };

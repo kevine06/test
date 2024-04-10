@@ -22,8 +22,8 @@ export default function SignInFrom() {
                 email,
                 password
             }
-        }).then(() => {
-                
+        }).then((res) => {
+                console.log(res);
                 navigate("/"); 
         })
         .catch((err) => {

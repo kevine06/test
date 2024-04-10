@@ -11,20 +11,20 @@ const cors = require('cors');
 const app = express();
 
 
-// const corsOptions = {
-//     origin: process.env.CLIENT_URL,
-//     credentials: true,
-//     'allowedHeaders': ['sessionId', 'Content-Type'],
-//     'exposedHeaders': ['sessionId'],
-//     'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//     'preflightContinue': false
-//   }
+const corsOptions = {
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    'allowedHeaders': ['sessionId', 'Content-Type'],
+    'exposedHeaders': ['sessionId'],
+    'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'preflightContinue': false
+  }
 // app.use(cors({
-//     origin: "http://localhost:5173/", // Permet les requêtes depuis ce domaine
+//     origin: "http://localhost:5173", // Permet les requêtes depuis ce domaine
 //     credentials: true, // Inclut les informations d'authentification dans les requêtes
 
 //   }));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser())
