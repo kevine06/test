@@ -25,6 +25,7 @@ export default function SignInFrom() {
         }).then((res) => {
                 console.log(res);
                 navigate("/"); 
+                
         })
         .catch((err) => {
             console.log('voici:',err);
