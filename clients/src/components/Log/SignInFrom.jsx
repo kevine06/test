@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { REACT_APP_API_URL } from '../../../env.js';
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export default function SignInFrom() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -24,8 +24,8 @@ export default function SignInFrom() {
             }
         }).then((res) => {
                 console.log(res);
-                navigate("/"); 
-                
+                window.location.replace("/"); 
+
         })
         .catch((err) => {
             console.log('voici:',err);
