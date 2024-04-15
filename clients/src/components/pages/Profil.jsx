@@ -1,7 +1,7 @@
 import Log from '../Log'
 import React , {useContext } from 'react';
 import { UidContext } from "../AppContext"
-import UpdateProfil from '../Profil/updateProfil';
+import UpdateProfil from '../Profil/UpdateProfil';
 
 
 function Profil() {

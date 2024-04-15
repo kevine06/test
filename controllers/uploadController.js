@@ -4,7 +4,7 @@ const UserModel = require('../models/user.model');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, `${__dirname}/../client/public/upload/profil/`);
+        cb(null, `${__dirname}/../clients/public/uploads/profil/`);
     },
     filename: function (req, file, cb) {
         cb(null, req.body.name + ".jpg");
@@ -48,12 +48,12 @@ module.exports.uploadProfil = (req, res) => {
                 return res.status(500).json({ error: err.message });
             }
           
-            const filename = req.body.userId + ".jpg";
+            const filename = req.body.name + ".jpg";
     
             const pushPicture = await UserModel.findByIdAndUpdate(
                 req.body.userId,
                 {
-                    $set: { picture: "./upload/profil/" + filename }
+                    $set: { picture: "./uploads/profil/" + filename }
                 },
                 { new: true, upsert: true, setDefaultsOnInsert: true }
             );
