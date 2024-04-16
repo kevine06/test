@@ -1,9 +1,6 @@
 export function dateParser(num) {
     // Vérifiez que l'entrée est une valeur valide
-    if (isNaN(num) || !num) {
-        // Si l'entrée n'est pas valide, renvoyer une valeur par défaut
-        return "Date invalide";
-    }
+
 
     let options = {
         hour: "2-digit",
