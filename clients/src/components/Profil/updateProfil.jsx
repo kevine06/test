@@ -4,6 +4,7 @@ import UploadImg from "./UploadImg";
 import { useState } from "react";
 import { updateBio } from "../../actions/user.action";
 import  {dateParser}  from "../Utils"
+import { FollowHandler } from "./FollowHandler";
 
 
 export default function UpdateProfil () {
@@ -61,12 +62,14 @@ export default function UpdateProfil () {
                      <ul>
                         {usersData.map((user) => {
                             for (let i = 0; i < userData.following.length; i++) {
-                                if (user._id === userData.following[i]) {
+                                if (user._id == userData.following[i]) {
                                     return (
                                         <li key={user._id}>
                                             <img src={user.picture} alt="user-pic" />
                                             <h4>{user.pseudo}</h4>
-                                            <h1>FOLLOW HANDLER</h1>
+                                            <div className="follow-handler">
+                                                <FollowHandler idToFollow={user._id} />                         
+                                            </div>
                                         </li>
                                     )
                                 }
@@ -92,8 +95,10 @@ export default function UpdateProfil () {
                                         <li key={user._id}>
                                             <img src={user.picture} alt="user-pic" />
                                             <h4>{user.pseudo}</h4>
-                                            <h1>FOLLOW HANDLER</h1>
-                                        </li>
+                                            <div className="follow-handler">
+                                                <FollowHandler idToFollow={user._id} />                         
+                                            </div>
+                                            </li>
                                      )
                                 }          
                             }
