@@ -1,14 +1,24 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { dateParser, isEmpty } from "../Utils";
 import { FollowHandler } from "../Profil/FollowHandler";
 import Likebutton from "./LikeButton";
+import { updatePost } from "../../actions/post.action";
 
-export default function Card ({ post }) {
+export default function Card({ post }) {
     const [isLoading, setLoading] = useState(true);
+    const [isUpdated, setIsUpdated] = useState(false);
+    const [textUpdated, setTextUpdated] = useState(null);
     const usersData = useSelector((state) => state.usersReducer);
     const userData = useSelector((state) => state.userReducer);
+    const dispatch = useDispatch();   
 
+    function updateItem() {
+        if (textUpdated) {
+            dispatch(updatePost(post._id, textUpdated))
+        }
+        setIsUpdated(false)
+    }
 
     useEffect(() => {
         !isEmpty(usersData[0] && setLoading(false));
@@ -24,6 +34,7 @@ export default function Card ({ post }) {
                     <img src={!isEmpty(usersData[0]) && usersData
                      .map((user) => {
                         if (user._id === post.posterId) return user.picture;
+                        
                      }).join('')
                     }
                      alt="poster-pic"
@@ -45,7 +56,20 @@ export default function Card ({ post }) {
                         </div>
                         <span>{dateParser(post.createdAt)}</span>
                     </div>
-                        <p>{post.message}</p>
+                       {isUpdated === false && <p>{post.message}</p> } 
+                       {isUpdated && (
+                            <div className="update-post">
+                                <textarea 
+                                defaultValue={post.message}
+                                onChange={(e) => setTextUpdated(e.target.value)}
+                                />
+                                <div className="nutton-container">
+                                    <button className="btn" onClick={updateItem}>
+                                        valider modification
+                                    </button>
+                                </div>
+                            </div>
+                       )}
                         {post.picture && (
                             <img src={post.picture} alt="card-pic" className="card-pic" />
                         )}
@@ -59,6 +83,13 @@ export default function Card ({ post }) {
                                     allowFullScreen
                                     title={post._id}
                                 ></iframe>
+                            )}
+                            {userData._id === post.posterId && (
+                                <div className="button-container">
+                                    <div onClick={() => setIsUpdated(!isUpdated)}>
+                                        <img src="./img/icons/edit.svg" alt="edit" />
+                                    </div>
+                                </div>
                             )}
                             <div className="card-footer">
                                 <div className="comment-icon">

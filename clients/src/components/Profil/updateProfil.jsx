@@ -102,9 +102,8 @@ export default function UpdateProfil () {
                                      )
                                 }          
                             }
-                        })
-
-                        }
+                             return null
+                        })}
                      </ul>
                  </div>
              </div>
