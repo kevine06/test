@@ -10,8 +10,9 @@ export const UPDATE_POST = "UPDATE_POST";
 export const DELETE_POST = "DELETE_POST";
 
 // comments
-
-export const ADD_COMMENT = "ADD_COMMENT"
+export const ADD_COMMENT = "ADD_COMMENT";
+export const EDIT_COMMENT = "EDIT_COMMENT";
+export const DELETE_COMMENT = "DELETE_COMMENT";
 
 
 export const getPosts = (num) => {
@@ -91,6 +92,34 @@ export const addComment = (postId, commenterId, text, commentesPseudo) => {
       })
         .then(() => {
           dispatch({ type: ADD_COMMENT, payload: { postId } });
+        })
+        .catch((err) => console.log(err));
+    };
+  };
+
+export const editComment = (postId, commenterId, text) => {
+    return (dispatch) => {
+      return axios({
+        method: "patch",
+        url: `${REACT_APP_API_URL}/api/post/edit-comment-post/${postId}`,
+        data: { commenterId, text },
+      })
+        .then(() => {
+          dispatch({ type: EDIT_COMMENT, payload: { postId, commenterId, text } });
+        })
+        .catch((err) => console.log(err));
+    };
+  };
+
+  export const deleteComment = (postId, commentId) => {
+    return (dispatch) => {
+      return axios({
+        method: "patch",
+        url: `${REACT_APP_API_URL}/api/post/delete-comment-post/${postId}`,
+        data: { commentId},
+      })
+        .then(() => {
+          dispatch({ type: DELETE_COMMENT, payload: { postId, commentId }});
         })
         .catch((err) => console.log(err));
     };

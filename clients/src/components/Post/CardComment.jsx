@@ -3,6 +3,7 @@ import { isEmpty, timestampParser } from "../Utils";
 import { useSelector, useDispatch } from "react-redux"
 import { FollowHandler } from "../Profil/FollowHandler";
 import { addComment, getPosts } from "../../actions/post.action";
+import EditDeleteComment from "./EditDeleteComment";
 
 
 
@@ -52,6 +53,7 @@ export function CardComments ({ post }) {
                             <span>{timestampParser(comment.timestamp)}</span>
                         </div>
                         <p>{comment.text}</p>
+                        <EditDeleteComment comment={comment} postId={post._id} />
                      </div>
                 </div>
                 )
