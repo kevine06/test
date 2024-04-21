@@ -5,11 +5,13 @@ import { FollowHandler } from "../Profil/FollowHandler";
 import Likebutton from "./LikeButton";
 import { updatePost } from "../../actions/post.action";
 import { DeleteCard } from "./DeleteCard";
+import { CardComments } from "./CardComment";
 
 export default function Card({ post }) {
     const [isLoading, setLoading] = useState(true);
     const [isUpdated, setIsUpdated] = useState(false);
     const [textUpdated, setTextUpdated] = useState(null);
+    const [showComments, setShowComments] = useState(false);
     const usersData = useSelector((state) => state.usersReducer);
     const userData = useSelector((state) => state.userReducer);
     const dispatch = useDispatch();   
@@ -95,12 +97,13 @@ export default function Card({ post }) {
                             )}
                             <div className="card-footer">
                                 <div className="comment-icon">
-                                    <img src="./img/icons/message1.svg" alt="comment" />
-                                    <span>{post.comments.length}</span>
+                                    <img onClick={() => setShowComments(!showComments)} src="./img/icons/message1.svg" alt="comment" />
+                                    <span>{post.Comments.length}</span>
                                 </div>
                                     <Likebutton post={post}/>
                                 <img src="./img/icons/share.svg" alt="share" />
                             </div>
+                            { showComments && < CardComments post={post} />}
                 </div>
             </>
         )}  
