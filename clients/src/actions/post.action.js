@@ -3,7 +3,8 @@ import { REACT_APP_API_URL } from "../../env";
 
 //posts
 
-export const  GET_POSTS = "GET_POSTS";
+export const GET_POSTS = "GET_POSTS";
+export const ADD_POST= "ADD_POST";
 export const LIKE_POST = "LIKE_POST";
 export const UNLIKE_POST = "UNLIKE_POST";
 export const UPDATE_POST = "UPDATE_POST";
@@ -25,6 +26,13 @@ export const getPosts = (num) => {
         })
         .catch((err) => console.log(err))
     }
+}
+
+export const addPost = (data) => {
+  return () => {
+      return axios
+      .post(`${REACT_APP_API_URL}/api/post/`, data)
+}
 }
 
 export const likePost = (postId, userId) => {

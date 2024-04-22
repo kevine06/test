@@ -17,7 +17,7 @@ module.exports.readPost = (req, res) => {
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, `${__dirname}/../client/public/upload/posts/`);
+        cb(null, `${__dirname}/../clients/public/uploads/posts/`);
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + "-" + file.originalname);
@@ -58,13 +58,14 @@ module.exports.createPost = async (req, res) => {
 
         let imagePath = null;
         if (req.file) {
-            imagePath = "./upload/posts/" + req.file.filename;
+            imagePath = "./uploads/posts/" + req.file.filename;
         }
 
         const newPost = new PostModel({
             posterId: req.body.posterId,
             message: req.body.message,
             picture: imagePath,
+            video: req.body.video,
             likers: [],
             comments: [],
         });

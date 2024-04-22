@@ -26,7 +26,7 @@ export const uploadPicture = (data, id) => {
     return (dispatch) => {
         return axios
             .post(`${REACT_APP_API_URL}/api/user/upload`, data)
-            .then((res) => {
+            .then(() => {
                 return axios
                 .get(`${REACT_APP_API_URL}/api/user/${id}`)
                 .then((res) => {
@@ -43,11 +43,11 @@ export const updateBio = (userId, bio) => {
     return (dispatch) => {
         return axios ({
             method: "put",
-            url: `${REACT_APP_API_URL}/api/user/` + userId,
+            url: (`${REACT_APP_API_URL}/api/user/${userId}`),
             data: { bio }
         })
-        .then ((res) => {
-            dispatch({ type: UPDATE_BIO, paylod: bio })
+        .then (() => {
+            dispatch({ type: UPDATE_BIO, paylod: {bio} })
         })
         .catch((err) => console.log(err))
     }
@@ -60,7 +60,7 @@ export const followUser = (followerId, idToFollow) => {
             url: `${REACT_APP_API_URL}/api/user/follow/` + followerId,
             data: { idToFollow }
         })
-        .then((res) => {
+        .then(() => {
             dispatch({ type: FOLLOW_USER, payload: { idToFollow}})
         })
         .catch ((err) => console.log(err));
@@ -88,7 +88,7 @@ export const unfollowUser = (followerId, idToUnFollow) => {
         url: `${REACT_APP_API_URL}/api/user/unfollow/` + followerId,
         data: { idToUnFollow },
       })
-        .then((res) => {
+        .then(() => {
           dispatch({ type: UNFOLLOW_USER, payload: { idToUnFollow } });
         })
         .catch((err) => console.log(err));

@@ -18,7 +18,7 @@ export function dateParser(num) {
     // Créer un objet Date à partir du timestamp
     if (isNaN(timestamp)) {
         // Gérer le cas où la conversion échoue
-        return "Date invalide t";
+        return Date();
     }
 
     let date = new Date(timestamp).toLocaleDateString('fr-FR', options);
