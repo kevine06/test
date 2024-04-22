@@ -2,7 +2,7 @@ const PostModel = require('../models/post.model')
 const UserModel = require('../models/user.model')
 const ObjectID = require('mongoose').Types.ObjectId;
 const multer = require('multer');
-
+const { uploadErrors } = require('../utils/erros.utils')
 
 
 module.exports.readPost = (req, res) => {
@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 150000 // Limite de taille en octets (150 Ko)
+        fileSize: 15000 // Limite de taille en octets (150 Ko)
     },
     fileFilter: function (req, file, cb) {
         if (
@@ -47,7 +47,8 @@ module.exports.createPost = async (req, res) => {
         if (err instanceof multer.MulterError) {
             // Si l'erreur est liée à la taille du fichier
             if (err.code === 'LIMIT_FILE_SIZE') {
-                return res.status(400).json({ error: 'File size exceeds the limit' });
+                const errors = uploadErrors(err); // Appel à uploadErrors avec le code d'erreur
+                return res.status(400).json({ errors });
             }
             // Autres erreurs Multer
             return res.status(400).json({ error: err.message });

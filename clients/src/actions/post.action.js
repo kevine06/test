@@ -15,6 +15,8 @@ export const ADD_COMMENT = "ADD_COMMENT";
 export const EDIT_COMMENT = "EDIT_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 
+//errors
+export const GET_POST_ERRORS = "GET_POST_ERRORS";
 
 export const getPosts = (num) => {
     return (dispatch) => {
@@ -29,11 +31,20 @@ export const getPosts = (num) => {
 }
 
 export const addPost = (data) => {
-  return () => {
-      return axios
+  return (dispatch) => {
+    return axios
       .post(`${REACT_APP_API_URL}/api/post/`, data)
-}
-}
+      .then((res) => {
+        const responseData = res.data;
+      })
+      .catch((error) => {
+        const serverErrors = error.response.data.errors;
+        dispatch({ type: GET_POST_ERRORS, payload: serverErrors });
+        throw error;
+      });
+  };
+};
+
 
 export const likePost = (postId, userId) => {
     return (dispatch) => {
