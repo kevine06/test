@@ -35,9 +35,26 @@ module.exports.uploadErrors = (err) => {
   let errors = { format: '', maxSize: '' };
 
   if (err.code.includes('LIMIT_FILE_SIZE')) {
-      errors.maxSize = "Le fichier dépasse la taille maximale autorisée (15 Ko)";
+      errors.maxSize = "Le fichier dépasse (150 Ko post)";
   }
-  // Gérer d'autres erreurs ici si nécessaire
+
+  if (err === 'LIMIT_FILE_TYPE') {
+    errors.format = "Le fichier incompatible";
+}
+
+  return errors;
+};
+
+module.exports.uploadPictureErrors = (err) => {
+  let errors = { format: '', maxSize: '' };
+
+  if (err.code && err.code.includes('LIMIT_FILE_SIZE')) {
+      errors.maxSize = "Le fichier dépasse (150 user Ko)";
+  }
+
+//   if (err.message.includes('LIMIT_FILE_TYPE')) {
+//     errors.format = "Le fichier incompatible";
+// }
 
   return errors;
 };

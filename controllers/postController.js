@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 15000 // Limite de taille en octets (150 Ko)
+        fileSize: 100000 // Limite de taille en octets (150 Ko)
     },
     fileFilter: function (req, file, cb) {
         if (
@@ -40,20 +40,23 @@ const upload = multer({
             cb(new Error('Invalid file type'));
         }
     }
-}).single('file'); // 'file' est le nom du champ de fichier dans le formulaire HTML
+}).single('file'); 
 
 module.exports.createPost = async (req, res) => {
     upload(req, res, async function (err) {
         if (err instanceof multer.MulterError) {
-            // Si l'erreur est liée à la taille du fichier
             if (err.code === 'LIMIT_FILE_SIZE') {
-                const errors = uploadErrors(err); // Appel à uploadErrors avec le code d'erreur
+                const errors = uploadErrors(err); 
                 return res.status(400).json({ errors });
             }
-            // Autres erreurs Multer
+
+            if (err.code === 'LIMIT_FILE_TYPE') {
+                const errors = uploadErrors(err); 
+                return res.status(400).json({ errors });
+            }    
+            
             return res.status(400).json({ error: err.message });
         } else if (err) {
-            // Autres erreurs
             return res.status(500).json({ error: err.message });
         }
 
@@ -127,7 +130,6 @@ module.exports.likePost = async (req, res) => {
         return res.status(400).send("ID unknown : " + req.params.id);
 
         try {
-            // Mettre à jour le post avec le like
             const userLikePost = await PostModel.findByIdAndUpdate(
                 req.params.id,
                 {
@@ -136,7 +138,6 @@ module.exports.likePost = async (req, res) => {
                 { new: true }
             );
     
-            // Mettre à jour l'utilisateur avec le like
             const AddLikeUser = await UserModel.findByIdAndUpdate(
                 req.body.id,
                 { 
@@ -179,16 +180,15 @@ module.exports.unlikePost = async (req, res) => {
             },
             { new: true }
         );
-        
-// Vérifier si les deux opérations se sont déroulées avec succès
-if (userLikePost && AddLikeUser) {
-    res.status(201).json({ post: userLikePost, user: AddLikeUser });
-} else {
-    res.status(400).send('Error to Add');
-}
-} catch (err) {
-res.status(500).send(err);
-}
+                
+        if (userLikePost && AddLikeUser) {
+            res.status(201).json({ post: userLikePost, user: AddLikeUser });
+        } else {
+            res.status(400).send('Error to Add');
+        }
+        } catch (err) {
+        res.status(500).send(err);
+    }
 }
 
 module.exports.commentPost = async (req, res) => {

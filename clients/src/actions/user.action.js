@@ -8,6 +8,8 @@ export const UPDATE_BIO = "UPDATE_BIO"
 export const FOLLOW_USER = "FOLLOW_USER"
 export const UNFOLLOW_USER = 'UNFOLLOW_USER'
 
+export const GET_USER_ERROR = "GET_USER_ERROR"
+
 export const getUser = (uid) => {
     return (dispatch) => {
         return axios
@@ -22,21 +24,45 @@ export const getUser = (uid) => {
     };
 };
 
+// export const uploadPicture = (data, id) => {
+//     return (dispatch) => {
+//         return axios
+//             .post(`${REACT_APP_API_URL}/api/user/upload`, data)
+//             .then(() => {
+//                 return axios
+//                 .get(`${REACT_APP_API_URL}/api/user/${id}`)
+//                 .then((res) => {
+//                     dispatch({ type: UPLOAD_PICTURE, payload: res.data.picture })
+//                 })
+
+//             })
+//             .catch((err) => console.log(err))
+//     }
+// }
+
 export const uploadPicture = (data, id) => {
     return (dispatch) => {
         return axios
             .post(`${REACT_APP_API_URL}/api/user/upload`, data)
             .then(() => {
                 return axios
-                .get(`${REACT_APP_API_URL}/api/user/${id}`)
-                .then((res) => {
-                    dispatch({ type: UPLOAD_PICTURE, payload: res.data.picture })
-                })
-
+                    .get(`${REACT_APP_API_URL}/api/user/${id}`)
+                    .then((res) => {
+                        dispatch({ type: UPLOAD_PICTURE, payload: res.data.picture });
+                        return res.data.picture;
+                    })
+                    .catch((err) => {
+                        const errorMessage = err.response.data.errors
+                        dispatch({ type: GET_USER_ERROR, payload: errorMessage})
+                    });
             })
-            .catch((err) => console.log(err))
-    }
-}
+            .catch((error) => {
+                const errorMessage =  error.response.data.errors
+                dispatch({ type: GET_USER_ERROR, payload: errorMessage})
+            });
+    };
+};
+
 
 
 export const updateBio = (userId, bio) => {

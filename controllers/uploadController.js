@@ -1,6 +1,8 @@
 
 const multer = require('multer');
 const UserModel = require('../models/user.model');
+const { uploadPictureErrors } = require('../utils/erros.utils')
+
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -14,17 +16,22 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 150000 
+        fileSize: 100000 
     },
-    fileFilter: function (req, file, cb) {
-        if (
-            file.mimetype === "image/jpeg" ||
-            file.mimetype === "image/png" ||
-            file.mimetype === "image/jpg"
-        ) {
-            cb(null, true);
-        } else {
-            cb(new Error('Invalid file type'));
+    fileFilter: async function (req, file, cb) {
+        try {
+            if (
+                file.mimetype === "image/jpeg" ||
+                file.mimetype === "image/png" ||
+                file.mimetype === "image/jpg"
+            ) {
+                cb(null, true);
+            } else {
+                throw Error('LIMIT_FILE_TYPE');        
+            }
+        } catch (err) {
+          cb (err) 
+          console.log(err)      
         }
     }
 }).single('file'); 
@@ -35,12 +42,14 @@ module.exports.uploadProfil = (req, res) => {
             if (err instanceof multer.MulterError) {
                
                 if (err.code === 'LIMIT_FILE_SIZE') {
-                    return res.status(400).json({ error: 'Image depasse 150ko' });
+                    const errors = uploadPictureErrors(err); 
+                    return res.status(400).json({ errors });
                 }
 
-                if (err.code === 'LIMIT_FILE_TYPE') {
-                    return res.status(400).json({ error: 'Format incompatible' });
-                }           
+                // if (err.message === 'LIMIT_FILE_TYPE') {
+                //     const errors = uploadPictureErrors(err); 
+                //     return res.status(400).json({ errors });
+                // }           
                 
                 return res.status(400).json({ error: err.message });
             } else if (err) {

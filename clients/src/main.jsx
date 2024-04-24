@@ -7,6 +7,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import {thunk} from 'redux-thunk';
 import rootReducer from './reducers';
 import { getUsers } from './actions/users.action.js';
+import { getPosts } from './actions/post.action.js';
 // import { composeWithDevTools } from "redux-devtools-extension";
 
 const store = configureStore({
@@ -18,6 +19,7 @@ const store = configureStore({
 
 
 store.dispatch(getUsers())
+store.dispatch(getPosts())
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
