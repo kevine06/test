@@ -5,6 +5,7 @@ import { UidContext } from '../AppContext';
 import NewPostForm from '../Post/NewPostForm';
 import Log from '../../components/Log'
 import Trends from '../Trends';
+import FriendsHint from '../Profil/FriendsHint';
 
 export default function Home() {
 
@@ -23,6 +24,7 @@ export default function Home() {
                 <div className='right-side-container'>
                     <div className='wrapper'>
                         <Trends />
+                        {uid && <FriendsHint />}
                     </div>
                 </div>
             

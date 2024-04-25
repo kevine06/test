@@ -5,6 +5,7 @@ import LeftNav from "../../components/LetNav"
 import { isEmpty } from "../Utils" 
 import Card from "../../components/Post/Card";
 import Trends from "../../components/Trends"
+import FriendsHint from "../Profil/FriendsHint";
 
 
 function Trending() {
@@ -24,6 +25,7 @@ function Trending() {
             <div className="right-side">
                 <div className="right-side-container">
                     <Trends />
+                    {uid && <FriendsHint />}
                 </div>
             </div>
         </div>
