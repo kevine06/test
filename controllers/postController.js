@@ -13,7 +13,7 @@ module.exports.readPost = (req, res) => {
 };
 
 
-// create post 
+
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 100000 // Limite de taille en octets (150 Ko)
+        fileSize: 100000
     },
     fileFilter: function (req, file, cb) {
         if (

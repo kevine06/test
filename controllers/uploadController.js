@@ -45,11 +45,7 @@ module.exports.uploadProfil = (req, res) => {
                     const errors = uploadPictureErrors(err); 
                     return res.status(400).json({ errors });
                 }
-
-                // if (err.message === 'LIMIT_FILE_TYPE') {
-                //     const errors = uploadPictureErrors(err); 
-                //     return res.status(400).json({ errors });
-                // }           
+         
                 
                 return res.status(400).json({ error: err.message });
             } else if (err) {

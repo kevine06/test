@@ -25,24 +25,7 @@ module.exports.signUp = async (req, res) => {
       res.status(200).send({ errors })
     }
   }
-// module.exports.signIn = async (req, res) => {
-//         const { email, password } = req.body;
 
-//     try {
-//          const user = await UserModel.login(email, password);
-//          const token = createToken(user._id);
-        
-//         // Définir le cookie dans le navigateur
-//         document.cookie = `jwt=${token}; domain=localhost; max-age=${maxAge}`;
-
-//         // Rediriger ou faire toute autre action nécessaire après la connexion réussie
-//         // window.location.href = "/dashboard"; // Rediriger vers un tableau de bord, par exemple
-//     } catch (err) {
-//         const errors = signInErrors(err);
-//         res.status(400).json(errors);
-//         // Gérer les erreurs d'authentification
-//     }
-// }
 
 module.exports.signIn = async (req, res) => {
     const { email, password } = req.body;
@@ -50,9 +33,9 @@ module.exports.signIn = async (req, res) => {
     try {
         const user = await UserModel.login(email, password);
         const token = createToken(user._id);
-        res.cookie('jwt', token, { maxAge, domain: 'localhost', // Définissez le domaine du cookie sur localhost
+        res.cookie('jwt', token, { maxAge, domain: 'localhost',
         port: 5173 });
-        // document.cookie = `jwt=${token}; domain=localhost; max-age=${maxAge}`;
+
         res.status(201).json({ user: user._id });
     } catch (err) {
         const errors = signInErrors(err)
